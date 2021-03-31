@@ -1,1 +1,2 @@
-# imersaodev-superTrunfo
+# imersaoDev Alura
+* Projeto: Super Trunfo do Harry Potter
