@@ -1,7 +1,7 @@
 # ImersaoDev Alura
 ## Projeto: Super Trunfo do Harry Potter
 
-![](https://github.com/haradwaith03/imersaodev-superTrunfo/blob/main/gif_vi.gif)
+![](https://github.com/haradwaith03/imersaodev-superTrunfo/blob/main/gif-projeto.gif)
 
 ##
 
