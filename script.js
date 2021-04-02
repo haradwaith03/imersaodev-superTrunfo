@@ -40,7 +40,7 @@ var carta04 = {
 
 var carta05 = {
     nome: "Dumbledore",
-    imagem: "https://wallpapercave.com/wp/wp2291385.jpg",
+    imagem: "https://static.wikia.nocookie.net/harrypotterfanon/images/8/88/Dumbledore.jpg",
     atributos: {
         ataque: 78,
         defesa: 80,
@@ -68,19 +68,9 @@ var carta07 = {
     }
 }
 
-var carta07 = {
-    nome: "Minerva McGonagall",
-    imagem: "https://www.media2.hw-static.com/media/2015/12/harry-potter-and-the-deathly-hallows-part-2-maggie-smith-warner-bros-122315-1276x850.jpg",
-    atributos: {
-        ataque: 75,
-        defesa: 90,
-        magia: 80
-    }
-}
-
 var carta08 = {
     nome: "Neville Longbottom",
-    imagem: "https://upload.wikimedia.org/wikipedia/tr/b/b6/Neville_Longbottom.jpg",
+    imagem: "https://static1.srcdn.com/wordpress/wp-content/uploads/2017/01/0.Neville.jpg",
     atributos: {
         ataque: 60,
         defesa: 50,
@@ -90,7 +80,7 @@ var carta08 = {
 
 var carta09 = {
     nome: "Gina Weasley",
-    imagem: "https://i.pinimg.com/originals/d7/51/88/d751883d4518a9abb401117e689b0225.jpg",
+    imagem: "https://i.skyrock.net/1375/79401375/pics/3078976219_1_3_CbtdBf5n.jpg",
     atributos: {
         ataque: 70,
         defesa: 50,
@@ -108,29 +98,44 @@ var carta10 = {
     }
 }
 
-
 var cartaMaquina
 var cartaJogador
 var cartas = [carta01, carta02, carta03, carta04, carta05, carta06, carta07, carta08, carta09, carta10]
 
+var pontosJogador = 0
+var pontosMaquina = 0
+
+atualizaPlacar()
+atualizaQuantidadeCartas()
+
+function atualizaQuantidadeCartas(){
+  var divQuantidadeCartas = document.getElementById('quantidade-cartas');
+  
+  var html = "Quantidade de Cartas no Jogo: " + cartas.length;
+  divQuantidadeCartas.innerHTML = html
+}
+
+function atualizaPlacar(){
+  var divPlacar = document.getElementById('placar')
+  var html = `<h3>` + "Jogador " + pontosJogador + " x " + pontosMaquina + " Maquina" + `</h3>`
+ divPlacar.innerHTML = html
+}
 
 function sortearCarta() {
     var numeroCartaMaquina = parseInt(Math.random() * cartas.length)
-    console.log(cartas.length)
-    // Math.floor(Math.random() * (max - min + 1)) + min
     cartaMaquina = cartas[numeroCartaMaquina]
+    cartas.splice(numeroCartaMaquina, 1)
 
     var numeroCartaJogador = parseInt(Math.random() * cartas.length)
-    while (numeroCartaJogador == numeroCartaMaquina) {
-        numeroCartaJogador = parseInt(Math.random() * cartas.length)
-    }
     cartaJogador = cartas[numeroCartaJogador]
-    
+    cartas.splice(numeroCartaJogador, 1)
 
     document.getElementById('btnSortear').disabled = true
+   
     document.getElementById('btnJogar').disabled = false
     
   exibeCartaJogador()
+  atualizaQuantidadeCartas()
 }
 
 function exibeCartaJogador(){
@@ -149,7 +154,6 @@ function exibeCartaJogador(){
   
 }
 
-
 function obtemAtributoSelecionado() {
     var radioAtributo = document.getElementsByName('atributo')
     for (var i = 0; i < radioAtributo.length; i++) {
@@ -161,20 +165,52 @@ function obtemAtributoSelecionado() {
 
 function jogar() {
     var atributoSelecionado = obtemAtributoSelecionado()
+    console.log(atributoSelecionado)
     var divResultado = document.getElementById('resultado')
     
+    if(atributoSelecionado != undefined){
+        if (cartaJogador.atributos[atributoSelecionado] > cartaMaquina.atributos[atributoSelecionado]) {
+            htmlResultado = '<p class = "resultado-final"> Parabéns! Você Venceu! 🏆 </p'
+            pontosJogador++
+             
+          } else if (cartaJogador.atributos[atributoSelecionado] < cartaMaquina.atributos[atributoSelecionado]) {
+            htmlResultado = '<p class = "resultado-final"> Não foi dessa vez... Você Perdeu! ❌ </p'
+            pontosMaquina++
+          } else {
+            htmlResultado = '<p class = "resultado-final"> Empatou! Ainda tem chance! ⚔</p'
+          }
 
-    if (cartaJogador.atributos[atributoSelecionado] > cartaMaquina.atributos[atributoSelecionado]) {
-      htmlResultado = '<p class = "resultado-final"> Parabéns! Você Venceu! 🏆 </p'
-       
-    } else if (cartaJogador.atributos[atributoSelecionado] < cartaMaquina.atributos[atributoSelecionado]) {
-      htmlResultado = '<p class = "resultado-final"> Não foi dessa vez... Você Perdeu! ❌ </p'
-    } else {
-      htmlResultado = '<p class = "resultado-final"> Empatou! Ainda tem chance! ⚔</p'
-    }
-   
-  divResultado.innerHTML = htmlResultado
+          if(cartas.length == 0){
+            alert("Game Over")
+            if(pontosJogador > pontosMaquina){
+              htmlResultado = '<p class="resultado-final"> Parabéns! Você é o Vencedor 🏆🏆 ! </p>'
+            }else if(pontosJogador > pontosMaquina){
+              htmlResultado = '<p class="resultado-final"> Você Perdeu! ❌❌ </p>'
+            }else{
+              htmlResultado = '<p class="resultado-final"> Você e a máquina empataram! ⚔⚔</p>'
+            }
+            
+          }else{
+            //Habilita o botão da próxima rodada
+            document.getElementById('btnProximaRodada').disabled = false
+          }
+
+          divResultado.innerHTML = htmlResultado
   exibeCartaMaquina()
+  atualizaPlacar()
+  atualizaQuantidadeCartas()
+  
+  document.getElementById('btnJogar').disabled = true
+    }else{
+        alert("Por favor selecione um atributo!")
+    }
+
+   
+   
+  
+  
+  
+  
 }
 
 function exibeCartaMaquina(){
@@ -191,4 +227,17 @@ function exibeCartaMaquina(){
   var html = "<div id = 'opcoes' class = 'carta-status'>"
   divCartaMaquina.innerHTML = moldura+nome+html+opcoesTexto+'</div>'
 
+}
+
+function proximaRodada(){
+  var divCartas = document.getElementById('cartas')
+  divCartas.innerHTML = `<div id="carta-jogador" class="carta"></div>
+                         <div id="carta-maquina" class="carta"></div>`
+  
+  document.getElementById('btnSortear').disabled = false
+  document.getElementById('btnJogar').disabled = true
+  document.getElementById('btnProximaRodada').disabled = true
+  
+  var divResultado = document.getElementById('resultado')
+  divResultado.innerHTML = ""
 }
