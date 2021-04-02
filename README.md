@@ -9,6 +9,7 @@
 * Lógica de Jogo
 * Imagens
 * Manipulação do HTML e CSS
+* Lógica de rodadas
 
 ##
 [Aula 08 - Alura](https://imersao.dev/aulas/aula08-supertrunfo-sistema)
